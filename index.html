@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Token Tapping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .token-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ff9900;
+            border: 5px solid #444;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+        }
+
+        .token-count {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        .bitcoin-icon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            opacity: 0.8;
+        }
+
+        @keyframes moveInRandomDirection {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .token {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: green;
+            animation: moveUp 2s ease-out;
+        }
+
+        @keyframes moveUp {
+            0% {
+                opacity: 1;
+                bottom: 10px;
+            }
+            100% {
+                opacity: 0;
+                bottom: 200px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="token-button" id="tokenButton">Tap Me!</div>
+    <div class="token-count">Tokens: <span id="tokenCount">0</span></div>
+</div>
+
+<script>
+    let tokenCount = 0;
+
+    document.getElementById('tokenButton').addEventListener('click', function() {
+        tokenCount += 3; // Change to 3 tokens per tap
+        document.getElementById('tokenCount').innerText = tokenCount;
+
+        // Create the token element that moves up
+        let token = document.createElement('div');
+        token.classList.add('token');
+        token.innerText = '+3 Tokens'; // Show +3 Tokens
+        document.body.appendChild(token);
+
+        // Remove the token after animation
+        setTimeout(function() {
+            token.remove();
+        }, 2000);
+
+        // Generate multiple Bitcoin icons in random directions
+        for (let i = 0; i < 10; i++) {
+            createBitcoinIcon();
+        }
+    });
+
+    function createBitcoinIcon() {
+        let bitcoin = document.createElement('img');
+        bitcoin.src = 'https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg';
+        bitcoin.classList.add('bitcoin-icon');
+
+        // Set random directions and speeds for the icon
+        let randomX = Math.floor(Math.random() * 1000) - 500; // Random value between -500 and 500
+        let randomY = Math.floor(Math.random() * 1000) - 500; // Random value between -500 and 500
+
+        bitcoin.style.setProperty('--x', `${randomX}px`);
+        bitcoin.style.setProperty('--y', `${randomY}px`);
+
+        bitcoin.style.animation = `moveInRandomDirection 3s linear forwards`;
+
+        document.body.appendChild(bitcoin);
+
+        // Remove the bitcoin icon after animation completes
+        setTimeout(function() {
+            bitcoin.remove();
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
